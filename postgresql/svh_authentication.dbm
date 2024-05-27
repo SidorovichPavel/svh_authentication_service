@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.1.3" use-changelog="false" max-obj-count="4"
+	 last-position="0,0" last-zoom="0.95" scene-rect="0,0,1598.39,1076.8"
+	 default-schema="public"
+	 layers="Default layer,New layer"
+	 active-layers="0"
+	 layer-name-colors="#000000,#000000"
+	 layer-rect-colors="#b4b4b4,#55b8e3"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="svh"
+ superuser="true"
+ createdb="true"
+ inherit="true"
+ login="true"
+ password="svh123qwe">
+</role>
+
+<database name="svh_authentication_service_db" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+</schema>
+
+<schema name="svh_authentication_schema" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#31363b">
+	<role name="svh"/>
+</schema>
+
+<table name="users" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="svh_authentication_schema"/>
+	<role name="svh"/>
+	<position x="200" y="140"/>
+	<column name="id" not-null="true" default-value="uuid_generate_v4()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="first_name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="last_name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="nickname" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="age" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="password_hash" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="salt" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="users_pk" type="pk-constr" table="svh_authentication_schema.users">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="unique_nickname" type="uq-constr" table="svh_authentication_schema.users">
+		<columns names="nickname" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<usertype name="signup_credentials_type" configuration="composite">
+	<schema name="svh_authentication_schema"/>
+	<typeattrib name="first_name">
+		<type name="text" length="0"/>
+	</typeattrib>
+	<typeattrib name="last_name">
+		<type name="text" length="0"/>
+	</typeattrib>
+	<typeattrib name="age">
+		<type name="smallint" length="0"/>
+	</typeattrib>
+	<typeattrib name="nickname">
+		<type name="text" length="0"/>
+	</typeattrib>
+	<typeattrib name="password_hash">
+		<type name="text" length="0"/>
+	</typeattrib>
+</usertype>
+
+<table name="permitions" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="svh_authentication_schema"/>
+	<role name="svh"/>
+	<position x="1100" y="220"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="title" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="permitions_pk" type="pk-constr" table="svh_authentication_schema.permitions">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="permitions_to_users" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="svh_authentication_schema"/>
+	<role name="svh"/>
+	<position x="680" y="200"/>
+
+	<customidxs object-type="column">
+		<object name="id_permitions" index="1"/>
+		<object name="id_users" index="0"/>
+	</customidxs>
+	<customidxs object-type="constraint">
+		<object name="permitions_fk" index="1"/>
+		<object name="users_fk" index="0"/>
+	</customidxs></table>
+
+<relationship name="users_has_many_permitions_to_users" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#202935"
+	 src-table="svh_authentication_schema.users"
+	 dst-table="svh_authentication_schema.permitions_to_users"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="permitions_has_many_permitions_to_users" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#4df2bb"
+	 src-table="svh_authentication_schema.permitions"
+	 dst-table="svh_authentication_schema.permitions_to_users"
+	 src-required="false" dst-required="false"/>
+
+<usertype name="signin_creditions_type" configuration="composite">
+	<schema name="svh_authentication_schema"/>
+	<typeattrib name="id">
+		<type name="uuid" length="0"/>
+	</typeattrib>
+	<typeattrib name="age">
+		<type name="smallint" length="0"/>
+	</typeattrib>
+	<typeattrib name="nickname">
+		<type name="text" length="0"/>
+	</typeattrib>
+	<typeattrib name="password_hash">
+		<type name="text" length="0"/>
+	</typeattrib>
+	<typeattrib name="salt">
+		<type name="text" length="0"/>
+	</typeattrib>
+</usertype>
+
+<extension name="uuid-ossp">
+	<schema name="svh_authentication_schema"/>
+</extension>
+
+</dbmodel>
